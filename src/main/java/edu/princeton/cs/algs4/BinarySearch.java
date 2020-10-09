@@ -91,8 +91,8 @@ public class BinarySearch {
     public static void main(String[] args) {
 
         // read the integers from a file
-        In in = new In(args[0]);
-        int[] allowlist = in.readAllInts();
+
+        int[] allowlist = {1,5,9,8,4,2,6,19};
 
         // sort the array
         Arrays.sort(allowlist);

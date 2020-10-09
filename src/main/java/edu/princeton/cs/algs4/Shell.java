@@ -65,7 +65,32 @@ public class Shell {
                     exch(a, j, j-h);
                 }
             }
+
             assert isHsorted(a, h); 
+            h /= 3;
+        }
+        assert isSorted(a);
+    }
+
+    public static void sort1(Comparable[] a) {
+        int n = a.length;
+        // 3x+1 increment sequence:  1, 4, 13, 40, 121, 364, 1093, ...
+        int h = 1;
+        while (h < n/3) h = 3*h + 1;
+
+        while (h >= 1) {
+            // h-sort the array
+            for (int i = h; i < n; i++) {
+                Comparable val = a[i];
+                int j = i;
+                for (; j >= h && less(a[j], a[j-h]); j -= h) {
+                    a[j-h] = a[j];
+                }
+                if(j != i) {
+                    a[j] = val;
+                }
+            }
+            assert isHsorted(a, h);
             h /= 3;
         }
         assert isSorted(a);
@@ -120,9 +145,16 @@ public class Shell {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        String[] a = StdIn.readAllStrings();
-        Shell.sort(a);
-        show(a);
+        // 创建要给80000个的随机的数组
+        Integer[] arr = new Integer[80000];
+        for (int i = 0; i < 80000; i++) {
+            arr[i] = (int) (Math.random() * 80000); // 生成一个[0, 8000000) 数
+        }
+        long begin = System.currentTimeMillis();
+        Shell.sort1(arr);
+        assert isSorted(arr);
+        long end = System.currentTimeMillis();
+        System.out.println("排序的时间是=" + (end - begin) + "ms");
     }
 
 }

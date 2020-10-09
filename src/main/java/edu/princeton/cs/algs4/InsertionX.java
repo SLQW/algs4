@@ -123,9 +123,16 @@ public class InsertionX {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        String[] a = StdIn.readAllStrings();
-        InsertionX.sort(a);
-        show(a);
+        // 创建要给80000个的随机的数组
+        Integer[] arr = new Integer[80000];
+        for (int i = 0; i < 80000; i++) {
+            arr[i] = (int) (Math.random() * 80000); // 生成一个[0, 8000000) 数
+        }
+        long begin = System.currentTimeMillis();
+        Insertion.sort1(arr);
+        assert isSorted(arr);
+        long end = System.currentTimeMillis();
+        System.out.println("排序的时间是=" + (end - begin) + "ms");
     }
 
 }

@@ -68,6 +68,21 @@ public class Insertion {
         assert isSorted(a);
     }
 
+    public static void sort1(Comparable[] a) {
+        int n = a.length;
+        for (int i = 1; i < n; i++) {
+            Comparable val = a[i];
+            int j = i;
+            for (; j > 0 && less(a[j], a[j-1]); j--) {
+                a[j] = a[j-1];
+            }
+            if(j != i)
+                a[j] = val;
+            assert isSorted(a, 0, i);
+        }
+    }
+
+
     /**
      * Rearranges the subarray a[lo..hi) in ascending order, using the natural order.
      * @param a the array to be sorted
@@ -99,6 +114,19 @@ public class Insertion {
         assert isSorted(a, comparator);
     }
 
+    public static void sort1(Object[] a, Comparator comparator) {
+        int n = a.length;
+        for (int i = 1; i < n; i++) {
+            Object val = a[i];
+            int j = i;
+            for (; j > 0 && less(a[j], a[j-1], comparator); j--) {
+                a[j] = a[j-1];
+            }
+            if(j != i)
+                a[j] = val;
+            assert isSorted(a, 0, i, comparator);
+        }
+    }
     /**
      * Rearranges the subarray a[lo..hi) in ascending order, using a comparator.
      * @param a the array
@@ -111,6 +139,19 @@ public class Insertion {
             for (int j = i; j > lo && less(a[j], a[j-1], comparator); j--) {
                 exch(a, j, j-1);
             }
+        }
+        assert isSorted(a, lo, hi, comparator);
+    }
+
+    public static void sort1(Object[] a, int lo, int hi, Comparator comparator) {
+        for (int i = lo + 1; i < hi; i++) {
+            Object val = a[i];
+            int j = i;
+            for (; j > lo && less(a[j], a[j-1], comparator); j--) {
+                a[j] = a[j-1];
+            }
+            if(j != i)
+                a[j] = val;
         }
         assert isSorted(a, lo, hi, comparator);
     }
@@ -204,9 +245,16 @@ public class Insertion {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        String[] a = StdIn.readAllStrings();
-        Insertion.sort(a);
-        show(a);
+        // 创建要给80000个的随机的数组
+        Integer[] arr = new Integer[80000];
+        for (int i = 0; i < 80000; i++) {
+            arr[i] = (int) (Math.random() * 80000); // 生成一个[0, 8000000) 数
+        }
+        long begin = System.currentTimeMillis();
+        Insertion.sort1(arr);
+        assert isSorted(arr);
+        long end = System.currentTimeMillis();
+        System.out.println("排序的时间是=" + (end - begin) + "ms");
     }
 }
 
